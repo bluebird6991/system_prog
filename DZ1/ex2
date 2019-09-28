@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir /home/$1
-var1=$((`cat /etc/passwd | tail -n 1 | awk -F : '{print $3}'`+1))
-#echo $var1
-echo "$1::$var1:1003:,,,:/home/$1:/bin/bash" » /etc/passwd
+UNICID=$((`cat /etc/passwd | tail -n 1 | awk -F : '{print $3}'`+1))
+echo "$1::$UNICID:$UNICID:,,,:/home/$1:/bin/bash" » /etc/passwd
 echo "$1::18166:0:99999:7:::" » /etc/shadow
+chown -R S1:S2 /home/$1
