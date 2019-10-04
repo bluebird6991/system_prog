@@ -1,0 +1,25 @@
+#!/bin/bash
+rm -rf ls $1
+#if [[ -f $1 ]]
+#В теории должен проверять существование, но , почему-то не срабатывает команда -f
+#then
+#echo "каталог существует"
+#else 
+#echo "каталог создан"
+mkdir $1
+#fi
+
+#if [["ls -l | grep -q -e "^-" | wc | awk '{print $1}'" >= 7 ]]
+#then
+#touch
+#echo "создали 1 капку"
+#else
+
+for number in 1 2 3 4 5 6 7
+do
+touch $1/$number
+sleep 1
+#echo $number
+done
+#echo "создали 7 папок"
+#fi
