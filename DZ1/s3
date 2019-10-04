@@ -1,4 +1,5 @@
 #!/bin/bash
+
 var1=`grep "of user $1" /var/log/auth.log | tail -n 1`
 var2=`grep "Removed session" /var/log/auth.log | tail -n 1`
 
