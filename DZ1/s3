@@ -8,39 +8,17 @@ var4=`grep "Removed session" /var/log/auth.log | tail -n 1 | awk '{print$ 8}' | 
 
 if [ $var3 = $var4 ] 
 then 
-	#echo "OK" 
 	var5=`grep "of user $1" /var/log/auth.log | tail -n 1 | awk '{print $3}'`
 	var6=`grep "Removed session" /var/log/auth.log | tail -n 1 | awk '{print $3}'`
-	#echo "var5 = $var5"
-	#echo "var6 = $var6"
 	T1=$(date -d $var5 +"%s")
 	T2=$(date -d $var6 +"%s")
 	T3=$(($T2-$T1))
-	#echo "T1 = $T1"
-	#echo "T2 = $T2"
-	#echo "T3 = $T3"	
 	echo "$(date -u -d @$T3 +"%H:%M:%S")"
 else
-	#echo "NO"
 	var5=`grep "of user $1" /var/log/auth.log | tail -n 1 | awk '{print $3}'`
 	T1=$(date -d $var5 +"%s")
 	T2=$(date +"%s");
 	T3=$(($T2-$T1))
 	echo "$(date -u -d @$T3 +"%H:%M:%S")"
-	#echo "T1 = $T1"
-	#echo "T2 = $T2"
-	#echo "T3 = $T3"
 fi
 
-#T1=$(date -d $var5 +"%s")
-#T2=$(date -d $var6 +"%s")
-#T3=$(($T2-$T1))
-#echo "T1 = $T1"
-#echo "T2 = $T2"
-#echo "T3 = $T3"
-#echo "$(date -u -d @$T3 +"%H:%M:%S")"
-
-#echo "var1 = $var1"
-#echo "var2 = $var2"
-#echo "var3 = $var3"
-#echo "var4 = $var4"
