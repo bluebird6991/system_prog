@@ -1,18 +1,18 @@
 #!/bin/bash
-var1=`grep "of user $1" /var/log/auth.log | tail -n 1`
-var2=`grep "Removed session" /var/log/auth.log | tail -n 1`
+var1=`grep -a "of user $1" /var/log/auth.log | tail -n 1`
+var2=`grep -a "Removed session" /var/log/auth.log | tail -n 1`
 
-var3=`grep "of user $1" /var/log/auth.log | tail -n 1 | awk '{print $8}'`
-var4=`grep "Removed session" /var/log/auth.log | tail -n 1 | awk '{print$ 8}' | rev | cut -c 2- | rev`
+var3=`grep -a "of user $1" /var/log/auth.log | tail -n 1 | awk '{print $8}'`
+var4=`grep -a "Removed session" /var/log/auth.log | tail -n 1 | awk '{print$ 8}' | rev | cut -c 2- | rev`
 
-if [ $var3 = $var4 ] 
+if [[ $var3 == $var4 ]] 
 then 
 	#echo "OK" 
-	var5=`grep "of user $1" /var/log/auth.log | tail -n 1 | awk '{print $3}'`
-	var6=`grep "Removed session" /var/log/auth.log | tail -n 1 | awk '{print $3}'`
+	var5=`grep -a "of user $1" /var/log/auth.log | tail -n 1 | awk '{print $3}'`
+	var6=`grep -a "Removed session" /var/log/auth.log | tail -n 1 | awk '{print $3}'`
 	#echo "var5 = $var5"
 	#echo "var6 = $var6"
-	T1=$(date -d $var5+"%s" )
+	T1=$(date -d $var5+"%s")
 	T2=$(date -d $var6+"%s")
 	T3=$(($T2-$T1))
 	#echo "T1 = $T1"
@@ -21,7 +21,7 @@ then
 	echo "$(date -u -d @$T3 +"%H:%M:%S")"
 else
 	#echo "NO"
-	var5=`grep "of user $1" /var/log/auth.log | tail -n 1 | awk '{print $3}'`
+	var5=`grep -a "of user $1" /var/log/auth.log | tail -n 1 | awk '{print $3}'`
 	T1=$(date -d $var5 +"%s")
 	T2=$(date +"%s");
 	T3=$(($T2-$T1))
