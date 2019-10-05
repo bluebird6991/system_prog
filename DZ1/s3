@@ -12,8 +12,8 @@ then
 	var6=`grep "Removed session" /var/log/auth.log | tail -n 1 | awk '{print $3}'`
 	#echo "var5 = $var5"
 	#echo "var6 = $var6"
-	T1=$(date -d $var5 +"%s")
-	T2=$(date -d $var6 +"%s")
+	T1=$(date -d $var5+"%s" )
+	T2=$(date -d $var6+"%s")
 	T3=$(($T2-$T1))
 	#echo "T1 = $T1"
 	#echo "T2 = $T2"
