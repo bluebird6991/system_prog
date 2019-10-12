@@ -1,0 +1,27 @@
+#!/bin/bash
+#grep "Failed password for $1" /var/log/auth.log | tail -n 3 | awk '{print $3}'
+T1=`grep "Failed password for $1" /var/log/auth.log | tail -n 3 | head -n 1 | awk '{print $3}'`
+T2=`grep "Failed password for $1" /var/log/auth.log | tail -n 2 | head -n 1 | awk '{print $3}'`
+T3=`grep "Failed password for $1" /var/log/auth.log | tail -n 1 | head -n 1 | awk '{print $3}'`
+
+T11=$(date -d $T1 +"%s")
+T12=$(date -d $T2 +"%s")
+T13=$(date -d $T3 +"%s")
+#echo $T11
+#echo $T12
+#echo $T13
+
+if [[ $T12-$T11<=60 ]]
+then
+	echo "user block"
+	passwd -l $1
+else
+	echo "vse ok"
+	if [[ $T13-$T12<=60 ]]
+	then
+	echo "user block"
+	passwd -l $1
+	else
+	echo "vse ok"
+	fi
+fi
