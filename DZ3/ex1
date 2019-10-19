@@ -1,0 +1,26 @@
+#!/bin/bash
+
+create='-c'
+delete='-d'
+
+if [[ $1 == $create ]]
+then
+if touch $2
+then
+echo " $2 created"
+else
+echo "invalid name  or file path entered incorrect"
+fi
+fi
+
+if [[ $1 == $delete ]]
+then
+if  rm $1
+then
+echo " $2 deleted"
+else 
+echo "invalid name or file path entered incorrect"
+fi
+fi
+
+
