@@ -15,7 +15,7 @@ fi
 
 if [[ $1 == $delete ]]
 then
-if  rm $1
+if rm $2
 then
 echo " $2 deleted"
 else 
