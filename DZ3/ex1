@@ -5,21 +5,31 @@ delete='-d'
 
 if [[ $1 == $create ]]
 then
-	if touch $2
+	if [ -e $2 ]
 	then
-		echo " $2 created"
+		echo "the file exists"
 	else
-		echo "invalid name  or file path entered incorrect"
+		if touch $2
+		then
+			echo "$2 created"
+		else
+			echo "invalid name  or file path entered incorrect"
+		fi
 	fi
 fi
 
 if [[ $1 == $delete ]]
 then
-	if rm $2
-	then
-		echo " $2 deleted"
+	if [ -e $2 ]
+	then 
+		if rm $2
+		then
+			echo " $2 deleted"
+		else 
+			echo "invalid name or file path entered incorrect"
+		fi
 	else 
-		echo "invalid name or file path entered incorrect"
+		echo "file does not exist"
 	fi
 fi
 
