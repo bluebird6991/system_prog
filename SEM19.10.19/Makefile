@@ -1,5 +1,6 @@
-obj-m += mymod.o
-all:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
-clean:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
+all: HW
+
+HW: HW.o
+	gcc -lm HW.o -o HW
+HW.o: HW.c
+	gcc -c HW.c -o HW.o
