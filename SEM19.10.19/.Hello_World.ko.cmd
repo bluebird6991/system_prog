@@ -1,0 +1,1 @@
+cmd_/home/korch/system_prog/SEM19.10.19/Hello_World.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000 -T /usr/src/linux-headers-4.19.0-6-common/scripts/module-common.lds  --build-id  -o /home/korch/system_prog/SEM19.10.19/Hello_World.ko /home/korch/system_prog/SEM19.10.19/Hello_World.o /home/korch/system_prog/SEM19.10.19/Hello_World.mod.o ;  true
