@@ -21,12 +21,11 @@ iface enp0s5 inet6 auto
 
 **********************************************************************
 
-#2 	ip -a search your ip adress
-#3 	open terminal in MAC OS
+#2 	"ip -a" search your ip adress (10.211.55.**)
+#3 	Open terminal in MAC OS
 #4 	CMD + Shift + K
-#5 	open sesion
-#6 	Download gcc                                                                     
-#7 	Download make and how to  
-#8 	su apt-get install linux-headers-$(uname -r) 
-#9 	su apt-get upgrade && install kmod  
-#10 	su apt-get install sudo source /etc/network/interfaces.d/*
+#5 	Open session
+#6 	"su apt-get upgrade && install gcc"                                                                     
+#7 	"su apt-get upgrade && install make"  
+#8 	"su apt-get install linux-headers-$(uname -r)" 
+#9 	"su apt-get upgrade && install kmod"
