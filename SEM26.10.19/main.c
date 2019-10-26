@@ -12,7 +12,6 @@ int main(int argc, char const *argv[]){
 	char c;
 	int str[MAX][COUNT];
 
-	printf("\n");
 	for(int i = 0; i < MAX; ++i){
 		str[0][i] = i + 65;
 		str[1][i] = 0;
@@ -38,13 +37,18 @@ int main(int argc, char const *argv[]){
 		}
 		i++;
 	}
-	printf("\n");
+
 	for(int i = 0; i < MAX; ++i){
-        	printf("%c = %d\n", str[0][i], str[1][i + 65]);
-        }
-	printf("\n");
+		if (str[1][i + 65] != 0){
+        		printf("%c = %d\n", str[0][i], str[1][i + 65]);
+			fprintf(f_out, "%c = %d\n", str[0][i], str[1][i + 65]);
+        	}
+	}
+
+
 	fclose(f_in);
 	fclose(f_out);
+
 return 0;
 }
 
