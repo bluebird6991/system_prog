@@ -1,0 +1,4 @@
+#!/bin/bash
+make
+./main $1 $2
+ls -l
