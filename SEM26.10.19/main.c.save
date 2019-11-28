@@ -27,8 +27,8 @@ void Open_File(char const *file_in, char const *file_out){
 }
 
 void Close_File(char *file_in, char *file_out){
-	//fclose(file_in);
-	//fclose(file_out);
+	fclose(file_in);
+	fclose(file_out);
 	printf("file %d close", file_in);
 	printf("file %d close", file_out);
 }
@@ -44,21 +44,22 @@ int main(int argc, char const *argv[]){
 		str[1][i] = 0;
 	}
 
-	//Open_File(argv[1], argv[2]);
+	Open_File(argv[1], argv[2]);
 	//Close_File(argv[1], argv[2]);
-	FILE *f_in = fopen(argv[1], "r");
-	FILE *f_out = fopen(argv[2], "w");
+	//FILE *f_in = fopen(argv[1], "r");
+	//FILE *f_out = fopen(argv[2], "w");
 
-	if(f_in == NULL){
-	perror("error 1");
-	return 1;
+	//if(f_in == NULL){
+		//perror("error 1");
+		//return 1;
 
-	}
+	//}
 
-	if(f_out == NULL){
-		perror("error 2");
-		return 2;
-	}
+	//if(f_out == NULL){
+	//	perror("error 2");
+	//	return 2;
+	//}
+	/*
 	while ((c = toupper(fgetc(f_in))) != EOF){ 
 		if(c >= 65 && c <= 90){
 			str[1][(int)c]++;
@@ -73,8 +74,9 @@ int main(int argc, char const *argv[]){
         	}
 	}
 
-	fclose(f_in);
-	fclose(f_out);
+	*/
+	//fclose(f_in);
+	//fclose(f_out);
 
 return 0;
 }
