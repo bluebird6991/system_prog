@@ -74,7 +74,8 @@ int heapPrint(char* topHeapPtr){
 }
 
 int heapAsc(char* topHeapPtr){
-	int nHeap; nHeap=strlen(topHeapPtr);
+	int nHeap;
+	nHeap=strlen(topHeapPtr);
 	if (nHeap == 0){
                 printf("Array is empty!!!\n\r");
         }else{
@@ -91,7 +92,9 @@ int heapAsc(char* topHeapPtr){
 	return 0;
 }
 
-int heapDesc(char* topHeapPtr){ int nHeap; nHeap=strlen(topHeapPtr);
+int heapDesc(char* topHeapPtr){
+	int nHeap;
+	nHeap=strlen(topHeapPtr);
 	if(nHeap == 0){
                 printf("Array is empty!!!\n\r");
         }else{
@@ -109,8 +112,11 @@ int heapDesc(char* topHeapPtr){ int nHeap; nHeap=strlen(topHeapPtr);
 }
 
 int main (){
-	char* heapPtr; heapPtr = (char*)malloc(128*sizeof(char));
-	int doProgram = 0; int choosedParameter = 5; while(doProgram == 0){
+	char* heapPtr;
+	heapPtr = (char*)malloc(128*sizeof(char));
+	int doProgram = 0;
+	int choosedParameter = 5;
+	while(doProgram == 0){
                 showMenu(&choosedParameter); printf("\n\r");
                 switch(choosedParameter){
                         case 1:{
