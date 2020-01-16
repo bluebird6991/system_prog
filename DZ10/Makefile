@@ -19,3 +19,9 @@ swdemo: swdemo.o
 	gcc -lm swdemo.o -o swdemo
 siglog.o: swdemo.c
 	gcc -c swdemo.c -o swdemo.o
+
+all: signal
+signal: signal.o
+	gcc -lm signal.o -o signal
+signal.o: signal.c
+	gcc -c signal.c -o signal.o
