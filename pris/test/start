@@ -1,0 +1,6 @@
+#!/bin/bash
+make
+./test
+
+echo "out.txt = "
+cat out.txt
