@@ -1,46 +1,50 @@
-/* a server in the unix domain.  The pathname of 
-   the socket address is passed as an argument */
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/un.h>
-#include <stdio.h>
-void error(const char *);
-int main(int argc, char *argv[])
+#include<stdio.h>
+#include<string.h>   //strlen
+#include<sys/socket.h>
+#include<arpa/inet.h>   //inet_addr
+
+int main(int argc , char *argv[])
 {
-   int sockfd, newsockfd, servlen, n;
-   socklen_t clilen;
-   struct sockaddr_un  cli_addr, serv_addr;
-   char buf[80];
+   int socket_desc;
+   struct sockaddr_in server;
+   char *message , server_reply[2000];
+   
+   //Create socket
+   socket_desc = socket(AF_INET , SOCK_STREAM , 0);
+   if (socket_desc == -1)
+   {
+      printf("Could not create socket");
+   }
+      
+   server.sin_addr.s_addr = inet_addr("74.125.235.20");
+   server.sin_family = AF_INET;
+   server.sin_port = htons( 80 );
 
-   if ((sockfd = socket(AF_UNIX,SOCK_STREAM,0)) < 0)
-       error("creating socket");
-   bzero((char *) &serv_addr, sizeof(serv_addr));
-   serv_addr.sun_family = AF_UNIX;
-   strcpy(serv_addr.sun_path, argv[1]);
-   servlen=strlen(serv_addr.sun_path) + 
-                     sizeof(serv_addr.sun_family);
-   if(bind(sockfd,(struct sockaddr *)&serv_addr,servlen)<0)
-       error("binding socket"); 
-
-   listen(sockfd,5);
-   clilen = sizeof(cli_addr);
-   newsockfd = accept(
-        sockfd,(struct sockaddr *)&cli_addr,&clilen);
-   if (newsockfd < 0) 
-        error("accepting");
-   n=read(newsockfd,buf,80);
-   printf("A connection has been established\n");
-   write(1,buf,n);
-   write(newsockfd,"I got your message\n",19);
-   close(newsockfd);
-   close(sockfd);
+   //Connect to remote server
+   if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0)
+   {
+      puts("connect error");
+      return 1;
+   }
+   
+   puts("Connected\n");
+   
+   //Send some data
+   message = "GET / HTTP/1.1\r\n\r\n";
+   if( send(socket_desc , message , strlen(message) , 0) < 0)
+   {
+      puts("Send failed");
+      return 1;
+   }
+   puts("Data Send\n");
+   
+   //Receive a reply from the server
+   if( recv(socket_desc, server_reply , 2000 , 0) < 0)
+   {
+      puts("recv failed");
+   }
+   puts("Reply received\n");
+   puts(server_reply);
+   
    return 0;
-}
-
-void error(const char *msg)
-{
-    perror(msg);
-    exit(0);
 }
