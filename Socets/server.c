@@ -1,72 +1,46 @@
-#include <stdio.h>
+/* a server in the unix domain.  The pathname of 
+   the socket address is passed as an argument */
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <unistd.h>
 #include <stdlib.h>
+#include <sys/un.h>
+#include <stdio.h>
+void error(const char *);
+int main(int argc, char *argv[])
+{
+   int sockfd, newsockfd, servlen, n;
+   socklen_t clilen;
+   struct sockaddr_un  cli_addr, serv_addr;
+   char buf[80];
 
-#include <netdb.h>
-#include <netinet/in.h>
-
-#include <string.h>
-
-int main( int argc, char *argv[] ) {
-   int sockfd, newsockfd, portno, clilen;
-   char buffer[256];
-   struct sockaddr_in serv_addr, cli_addr;
-   int  n;
-   
-   /* First call to socket() function */
-   sockfd = socket(AF_INET, SOCK_STREAM, 0);
-   
-   if (sockfd < 0) {
-      perror("ERROR opening socket");
-      exit(1);
-   }
-   
-   /* Initialize socket structure */
+   if ((sockfd = socket(AF_UNIX,SOCK_STREAM,0)) < 0)
+       error("creating socket");
    bzero((char *) &serv_addr, sizeof(serv_addr));
-   portno = 5001;
-   
-   serv_addr.sin_family = AF_INET;
-   serv_addr.sin_addr.s_addr = INADDR_ANY;
-   serv_addr.sin_port = htons(portno);
-   
-   /* Now bind the host address using bind() call.*/
-   if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
-      perror("ERROR on binding");
-      exit(1);
-   }
-      
-   /* Now start listening for the clients, here process will
-      * go in sleep mode and will wait for the incoming connection
-   */
-   
+   serv_addr.sun_family = AF_UNIX;
+   strcpy(serv_addr.sun_path, argv[1]);
+   servlen=strlen(serv_addr.sun_path) + 
+                     sizeof(serv_addr.sun_family);
+   if(bind(sockfd,(struct sockaddr *)&serv_addr,servlen)<0)
+       error("binding socket"); 
+
    listen(sockfd,5);
    clilen = sizeof(cli_addr);
-   
-   /* Accept actual connection from the client */
-   newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, &clilen);
-    
-   if (newsockfd < 0) {
-      perror("ERROR on accept");
-      exit(1);
-   }
-   
-   /* If connection is established then start communicating */
-   bzero(buffer,256);
-   n = read( newsockfd,buffer,255 );
-   
-   if (n < 0) {
-      perror("ERROR reading from socket");
-      exit(1);
-   }
-   
-   printf("Here is the message: %s\n",buffer);
-   
-   /* Write a response to the client */
-   n = write(newsockfd,"I got your message",18);
-   
-   if (n < 0) {
-      perror("ERROR writing to socket");
-      exit(1);
-   }
-      
+   newsockfd = accept(
+        sockfd,(struct sockaddr *)&cli_addr,&clilen);
+   if (newsockfd < 0) 
+        error("accepting");
+   n=read(newsockfd,buf,80);
+   printf("A connection has been established\n");
+   write(1,buf,n);
+   write(newsockfd,"I got your message\n",19);
+   close(newsockfd);
+   close(sockfd);
    return 0;
+}
+
+void error(const char *msg)
+{
+    perror(msg);
+    exit(0);
 }
