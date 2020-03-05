@@ -1,42 +1,41 @@
-#include<stdio.h>
-#include<string.h>   //strlen
-#include<sys/socket.h>
-#include<arpa/inet.h>   //inet_addr
+#include <stdio.h> 
+#include <sys/socket.h> 
+#include <arpa/inet.h> 
+#include <unistd.h> 
+#include <string.h> 
+#define PORT 8080 
 
-int main(int argc , char *argv[])
-{
-   int socket_desc;
-   struct sockaddr_in server;
-   char *message;
-   
-   //Create socket
-   socket_desc = socket(AF_INET , SOCK_STREAM , 0);
-   if (socket_desc == -1)
-   {
-      printf("Could not create socket");
-   }
-      
-   server.sin_addr.s_addr = inet_addr("74.125.235.20");
-   server.sin_family = AF_INET;
-   server.sin_port = htons( 80 );
+int main(int argc, char const *argv[]) 
+{ 
+   int sock = 0, valread; 
+   struct sockaddr_in serv_addr; 
+   char *hello = "Hello from client"; 
+   char buffer[1024] = {0}; 
+   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
+   { 
+      printf("\n Socket creation error \n"); 
+      return -1; 
+   } 
 
-   //Connect to remote server
-   if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0)
-   {
-      puts("connect error");
-      return 1;
-   }
+   serv_addr.sin_family = AF_INET; 
+   serv_addr.sin_port = htons(PORT); 
    
-   puts("Connected\n");
-   
-   //Send some data
-   message = "GET / HTTP/1.1\r\n\r\n";
-   if( send(socket_desc , message , strlen(message) , 0) < 0)
-   {
-      puts("Send failed");
-      return 1;
-   }
-   puts("Data Send\n");
-   
-   return 0;
-}
+   // Convert IPv4 and IPv6 addresses from text to binary form 
+   if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0) 
+   { 
+      printf("\nInvalid address/ Address not supported \n"); 
+      return -1; 
+   } 
+
+   if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) 
+   { 
+      printf("\nConnection Failed \n"); 
+      return -1; 
+   } 
+   send(sock , hello , strlen(hello) , 0 ); 
+   printf("Hello message sent\n"); 
+   valread = read( sock , buffer, 1024); 
+   printf("%s\n",buffer ); 
+   return 0; 
+} 
+
