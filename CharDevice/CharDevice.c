@@ -60,9 +60,11 @@ void cleanup_module(void){
   /* 
    * Отключение устройства 
    */
-  int ret = unregister_chrdev(Major, DEVICE_NAME);
-  if (ret < 0)
-    printk("Error in unregister_chrdev: %d\n", ret);
+  //int ret = 
+    unregister_chrdev(Major, DEVICE_NAME);
+  //if (ret < 0)
+    //printk("Error in unregister_chrdev: %d\n", ret);
+    printk("Error in unregister_chrdev:\n");
 }
 
 /*
