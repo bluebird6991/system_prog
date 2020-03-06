@@ -151,7 +151,7 @@ static ssize_t device_read(     struct file *filp, /* см. include/linux/fs.h  
  */
 static ssize_t device_write(    struct file *filp, 
                                 const char *buff,
-                                size_t len,
+                                size_t length,
                                 loff_t * off){
 
     /*int bytes_write = 0;
