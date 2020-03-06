@@ -174,9 +174,9 @@ static ssize_t device_write(    struct file *filp,
 #endif
 
     for (i = 0; i < length && i < BUF_LEN; i++)
-        get_user(Message[i], buff + i);
+        get_user(msg[i], buff + i);
 
-    msg_Ptr = Message;
+    msg_Ptr = msg;
 
     /* 
      * Again, return the number of input characters used 
