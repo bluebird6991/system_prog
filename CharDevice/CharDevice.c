@@ -158,10 +158,13 @@ static ssize_t device_write(    struct file *filp,
 #ifdef DEBUG
     //printk(KERN_INFO "device_write(%p,%s,%d)", file, buff, length);
 #endif
-    printk(KERN_INFO "device_write(%p,%s,%d)", file, buff, length);
+    //printk(KERN_INFO "device_write(%p,%s,%d)", file, buff, length);
 
-    for (i = 0; i < length && i < BUF_LEN; i++)
+
+    for (i = 0; i < length && i < BUF_LEN; i++){
+        printk(KERN_INFO "OK");
         get_user(msg[i], buff + i);
+    }
 
     msg_Ptr = msg;
 
