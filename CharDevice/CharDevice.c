@@ -170,13 +170,13 @@ static ssize_t device_write(    struct file *filp,
     int i;
 
 #ifdef DEBUG
-    printk(KERN_INFO "device_write(%p,%s,%d)", file, buffer, length);
+    printk(KERN_INFO "device_write(%p,%s,%d)", file, buff, length);
 #endif
 
     for (i = 0; i < length && i < BUF_LEN; i++)
-        get_user(Message[i], buffer + i);
+        get_user(Message[i], buff + i);
 
-    Message_Ptr = Message;
+    Msg_Ptr = Message;
 
     /* 
      * Again, return the number of input characters used 
