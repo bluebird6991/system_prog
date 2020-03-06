@@ -97,7 +97,8 @@ int init_module()
 
   if (Our_Proc_File == NULL) {
     rv = -ENOMEM;
-    remove_proc_entry("test", &proc_root);
+    //remove_proc_entry("test", &proc_root);
+    remove_proc_entry("test", &rb_root);
     printk(KERN_INFO "Error: Could not initialize /proc/test\n");
   } else {
     printk(KERN_INFO "Success!\n");
@@ -115,6 +116,7 @@ int init_module()
 
 void cleanup_module()
 {
-  remove_proc_entry("test", &proc_root);
+  //remove_proc_entry("test", &proc_root);
+  remove_proc_entry("test", &rb_root);
   printk(KERN_INFO "/proc/test removed\n");
 }
