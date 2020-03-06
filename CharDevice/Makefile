@@ -1,7 +1,6 @@
+obj += CharDivice.o
+
 all:
-
-CharDevice: CharDevice.o
-	gcc -c CharDevice.o -o CharDevice
-
-CharDevice.o: CharDevice.c
-	gcc -c CharDevice.c -o CharDevice.o
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+clean:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
