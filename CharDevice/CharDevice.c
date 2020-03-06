@@ -153,25 +153,12 @@ static ssize_t device_write(    struct file *filp,
                                 const char *buff,
                                 size_t length,
                                 loff_t * off){
-
-    /*int bytes_write = 0;
-    if(*msg_Ptr == 0){
-        return 0;
-    }
-
-    while(length && *msg_Ptr){
-        get_user(*(msg_Ptr++), buffer++);
-        length--;
-        bytes_read++;
-    }
-
-    printk("<1>Sorry, this operation isn't supported.\n");
-*/
     int i;
 
 #ifdef DEBUG
-    printk(KERN_INFO "device_write(%p,%s,%d)", file, buff, length);
+    //printk(KERN_INFO "device_write(%p,%s,%d)", file, buff, length);
 #endif
+    printk(KERN_INFO "device_write(%p,%s,%d)", file, buff, length);
 
     for (i = 0; i < length && i < BUF_LEN; i++)
         get_user(msg[i], buff + i);
