@@ -140,7 +140,7 @@ static ssize_t device_write(    struct file *filp,
     }
 
     msg_Ptr = msg;
-
+*/
     /* 
      * Again, return the number of input characters used 
      */
