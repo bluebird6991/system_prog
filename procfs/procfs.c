@@ -35,7 +35,7 @@ struct proc_dir_entry *Our_Proc_File;
 * directory>/fs/proc/array.c.
 *
 * If something is unknown about the kernel, this is * usually the way to go. In Linux we have the great * advantage of having the kernel source code for
-* free − use it.
+* free - use it.
 */
 int procfile_read(  char *buffer,
                     char **buffer_location,
@@ -70,7 +70,7 @@ int init_module() {
     if (Our_Proc_File == NULL) {
         remove_proc_entry(procfs_name, &proc_root);
         printk(KERN_ALERT "Error: Could not initialize /proc/%s\n", procfs_name); 
-        return −ENOMEM;
+        return -ENOMEM;
     }
     Our_Proc_File->read_proc    = procfile_read;
     Our_Proc_File->owner        = THIS_MODULE;
