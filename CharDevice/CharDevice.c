@@ -162,7 +162,7 @@ static ssize_t device_write(    struct file *filp,
 
 
     for (i = 0; i < length && i < BUF_LEN; i++){
-        printk(KERN_INFO "OK");
+        printk(KERN_INFO "OK %c", msg[i]);
         get_user(msg[i], buff + i);
     }
 
