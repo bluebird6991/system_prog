@@ -87,7 +87,8 @@ static ssize_t dev_write(	struct file *filp,
 		printk(KERN_ALERT "Wbuff = %s len = %lu\n", buff, len);
 		while(len > 0){
 			//msg[count++] = buff[ind--]; //copy the given string to the driver but in reverse
-			msg[count] = buff[count];
+			//msg[count] = buff[count];
+			get_user(msg[count], buff[count]);
 			count++;
 			len--;
 		}
