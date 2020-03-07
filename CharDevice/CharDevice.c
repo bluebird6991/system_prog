@@ -17,10 +17,6 @@ static ssize_t device_write(struct file *, const char *, size_t, loff_t *);
 #define DEVICE_NAME "chardev"   /* Имя устройства, будет отображаться в /proc/devices   */
 #define BUF_LEN 80                      /* Максимальная длина сообщения */
 
-/* 
- * Глобальные переменные, объявлены как static, воизбежание конфликтов имен. 
- */
-
 static int Major;             /* Старший номер устройства нашего драйвера */
 static int Device_Open = 0;   /* Устройство открыто?  
                                * используется для предотвращения одновременного 
@@ -57,13 +53,7 @@ int init_module(void){
 }
 
 void cleanup_module(void){
-  /* 
-   * Отключение устройства 
-   */
-  //int ret = 
     unregister_chrdev(Major, DEVICE_NAME);
-  //if (ret < 0)
-    //printk("Error in unregister_chrdev: %d\n", ret);
     printk("Error in unregister_chrdev:\n");
 }
 
@@ -109,40 +99,21 @@ static ssize_t device_read(     struct file *filp, /* см. include/linux/fs.h  
                                 char *buffer,      /* буфер, куда надо положить данные */
                                 size_t length,     /* размер буфера */
                                 loff_t *offset){
-  /*
-   * Количество байт, фактически записанных в буфер
-   */
-    int bytes_read = 0;
 
-  /*
-   * Если достигли конца сообщения, 
-   * вернуть 0, как признак конца файла
-   */
+    int bytes_read = 0;
     if (*msg_Ptr == 0){
         return 0;
     }
-
-  /* 
-   * Перемещение данных в буфер
-   */
     while (length && *msg_Ptr){
-
-    /* 
-     * Буфер находится в пространстве пользователя (в сегменте данных), 
-     * а не в пространстве ядра, поэтому простое присваивание здесь недопустимо. 
-     * Для того, чтобы скопировать данные, мы используем функцию put_user, 
-     * которая перенесет данные из пространства ядра в пространство пользователя. 
-     */
         put_user(*(msg_Ptr++), buffer++);
+        printk(KERN_INFO "ptr - %s, buff - %s", msg_Ptr, buffer);
 
         length--;
         bytes_read++;
     }
-
-  /* 
-   * В большинстве своем, функции чтения возвращают количество байт, записанных в буфер.
-   */
     return bytes_read;
+    //shot count = 0;
+    //while(length && (msg[]))
 }
 
 /*  
@@ -153,7 +124,7 @@ static ssize_t device_write(    struct file *filp,
                                 const char *buff,
                                 size_t length,
                                 loff_t * off){
-    int i;
+/*    int i;
 
 #ifdef DEBUG
     //printk(KERN_INFO "device_write(%p,%s,%d)", file, buff, length);
@@ -165,7 +136,7 @@ static ssize_t device_write(    struct file *filp,
         printk(KERN_INFO "OK %c", msg[i]);
         printk(KERN_INFO "info - %s", buff);
         //get_user(msg[i], buff + i);
-        put_user(
+        put_user();
     }
 
     msg_Ptr = msg;
@@ -173,6 +144,15 @@ static ssize_t device_write(    struct file *filp,
     /* 
      * Again, return the number of input characters used 
      */
-    return i;
+    //return i;
     //return -EINVAL;
+     short ind = length - 1;
+     short count = 0;
+     memset(msg, 0, BUF_LEN);
+     readPos = 0;
+     while(length > 0){
+        msg[count++] = buff[ind--];
+        length--;
+     }
+     return count;
 }
