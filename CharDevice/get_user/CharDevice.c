@@ -62,11 +62,13 @@ static ssize_t dev_read(struct file *filp,char *buff,size_t len, loff_t *off){
 		short count = 0;
 		while (len &&(msg[readPos] != 0)){
 				put_user(msg[readPos],buff++); //copy byte from kernel space to user space
-				printk(KERN_ALERT "Print char %d - %c", count, msg[readPos]);
+				printk(KERN_ALERT "Print char %d - %c buff - %s", count, msg[readPos], buff);
 				count++;
 				len--;
 				readPos++;
 		}
+
+		//while(len && )
 		return count;
 }
 
