@@ -1,2 +1,2 @@
-make
-./CharDevice
+sudo insmod Chardevice.ko
+sudo mknod /dev/chardev/ c 245 0
