@@ -149,9 +149,10 @@ static ssize_t device_write(    struct file *filp,
      short ind = length - 1;
      short count = 0;
      memset(msg, 0, BUF_LEN);
-     readPos = 0;
+     //readPos = 0;
+     msg_Ptr = 0;
      while(length > 0){
-        msg[count++] = buff[ind--];
+        *(msg_Ptr++) = buff[ind--];
         length--;
      }
      return count;
