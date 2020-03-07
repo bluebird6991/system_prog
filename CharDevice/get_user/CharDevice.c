@@ -31,7 +31,7 @@ static struct file_operations fops =
 // called when module is loaded, similar to main()
 int init_module(void)
 {
-		t = register_chrdev(89,"myDev",&fops); //register driver with major:89
+		t = register_chrdev(0,"myDev",&fops); //register driver with major:89
 
 		if (t < 0 ){
 			printk(KERN_ALERT "Device registration failed..\n");
@@ -45,7 +45,7 @@ int init_module(void)
 // called when module is unloaded, similar to destructor in OOP
 void cleanup_module(void)
 {
-        unregister_chrdev(89,"myDev");
+        unregister_chrdev(t, "myDev");
 }
 
 // called when 'open' system call is done on the device file
