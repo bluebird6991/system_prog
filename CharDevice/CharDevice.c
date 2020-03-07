@@ -124,28 +124,6 @@ static ssize_t device_write(    struct file *filp,
                                 const char *buff,
                                 size_t length,
                                 loff_t * off){
-/*    int i;
-
-#ifdef DEBUG
-    //printk(KERN_INFO "device_write(%p,%s,%d)", file, buff, length);
-#endif
-    //printk(KERN_INFO "device_write(%p,%s,%d)", file, buff, length);
-
-
-    for (i = 0; i < length && i < BUF_LEN; i++){
-        printk(KERN_INFO "OK %c", msg[i]);
-        printk(KERN_INFO "info - %s", buff);
-        //get_user(msg[i], buff + i);
-        put_user();
-    }
-
-    msg_Ptr = msg;
-*/
-    /* 
-     * Again, return the number of input characters used 
-     */
-    //return i;
-    //return -EINVAL;
      short ind = length - 1;
      short count = 0;
      memset(msg, 0, BUF_LEN);

@@ -12,7 +12,7 @@ MODULE_DESCRIPTION("Device Driver Demo");
 #define BUFF_LEN 100
 
 static char msg[BUFF_LEN]={0};
-static short readPos=0;
+static short readPos = 0;
 static int times = 0;
 static int t;
 
@@ -60,8 +60,9 @@ static int dev_open(struct inode *inod,struct file *fil){
 // called when 'read' system call is done on the device file
 static ssize_t dev_read(struct file *filp,char *buff,size_t len, loff_t *off){
 		short count = 0;
-		while (len &&(msg[readPos]!=	0)){
+		while (len &&(msg[readPos] != 0)){
 				put_user(msg[readPos],buff++); //copy byte from kernel space to user space
+				printk(KERN_ALERT "Print char %d - %c", count, msg[readPos]);
 				count++;
 				len--;
 				readPos++;
@@ -78,9 +79,8 @@ static ssize_t dev_write(	struct file *filp,
 		short count=0;
 		memset(msg , 0, BUFF_LEN);
 		//readPos=0;
-		while(len>0)
-		{
-			msg[count++] = buff [ind--]; //copy the given string to the driver but in reverse
+		while(len > 0){
+			msg[count++] = buff[ind--]; //copy the given string to the driver but in reverse
 			len--;
 		}
 		return count;
