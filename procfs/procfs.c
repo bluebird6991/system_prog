@@ -72,12 +72,12 @@ int init_module() {
         printk(KERN_ALERT "Error: Could not initialize /proc/%s\n", procfs_name); 
         return −ENOMEM;
     }
-    Our_Proc_File−>read_proc    = procfile_read;
-    Our_Proc_File−>owner        = THIS_MODULE;
-    Our_Proc_File−>mode         = S_IFREG | S_IRUGO;
-    Our_Proc_File−>uid          = 0;
-    Our_Proc_File−>gid          = 0;
-    Our_Proc_File−>size         = 37;
+    Our_Proc_File->read_proc    = procfile_read;
+    Our_Proc_File->owner        = THIS_MODULE;
+    Our_Proc_File->mode         = S_IFREG | S_IRUGO;
+    Our_Proc_File->uid          = 0;
+    Our_Proc_File->gid          = 0;
+    Our_Proc_File->size         = 37;
 
     printk(KERN_INFO "/proc/%s created\n", procfs_name);
     return 0; /* everything is ok */
