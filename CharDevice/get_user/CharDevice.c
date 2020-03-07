@@ -9,8 +9,9 @@ MODULE_DESCRIPTION("Device Driver Demo");
 //M0DULE_AUTH0R("Appu Sajeev");
 
 #define DEVICE_NAME "chardev"
+#define BUFF_LEN 100
 
-static char msg[100]={0};
+static char msg[BUFF_LEN]={0};
 static short readPos=0;
 static int times = 0;
 static int t;
@@ -75,8 +76,8 @@ static ssize_t dev_write(	struct file *filp,
 							loff_t *off){
 		short ind = len-1;
 		short count=0;
-		memset(msg,0,100);
-		readPos=0;
+		memset(msg , 0, BUFF_LEN);
+		//readPos=0;
 		while(len>0)
 		{
 			msg[count++] = buff [ind--]; //copy the given string to the driver but in reverse
