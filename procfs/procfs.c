@@ -82,7 +82,7 @@ int init_module() {
     printk(KERN_INFO "/proc/%s created\n", procfs_name);
     return 0; /* everything is ok */
 
-void cleanup_module() {
+void cleanup_module(){
     remove_proc_entry(procfs_name, &proc_root);
     printk(KERN_INFO "/proc/%s removed\n", procfs_name);
 }
