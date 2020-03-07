@@ -1,122 +1,88 @@
-/*
- *  procfs.c -  пример создания "файла" в /proc
+#include <linux/module.h> 
+#include <linux/kernel.h> 
+#include <linux/proc_fs.h>
+/* Specifically, a module */
+/* We're doing kernel work */
+/* Necessary because we use the proc fs */
+#define procfs_name "helloworld"
+/**
+ * This structure hold information about the /proc file
+ *
  */
-
-#include <linux/module.h> /* Необходимо для любого модуля */
-#include <linux/kernel.h> /* Все-таки мы работаем с ядром! */
-#include <linux/proc_fs.h>/* Необходимо для работы с файловой системой /proc */
-
 struct proc_dir_entry *Our_Proc_File;
-
-/* Обработчик чтения из файла в /proc.
- * 
- * Аргументы
- * =========
- * 1. Буфер с данными. Как его заполнить -- вы решаете сами
- * 2. Указатель на указатель на строку символов. 
- *    Если вы не желаете использовать буфер
- *    размещенный ядром.
- * 3. Текущая позиция в файле
- * 4. Размер буфера.
- * 5. Признак конца файла, "1" == EOF.
- * 6. Указатель на данные (необходим в случае единственного
- *    обработчика на несколько файлов в /proc)
- *
- * Порядок использования и возвращаемое значение
- * =============================================
- * Нулевое значение == "буфер пуст", т.е. "Конец файла". 
- * Отрицательное значение == код ошибки.
- *
- * Дополнительные сведения
- * =======================
- * Основные принципы реализации этой функции
- * я почерпнул не из документации, а из исходных текстов
- * модулей, выполняющих подобные действия. Меня интересовало использование
- * поля get_info в структуре proc_dir_entry (Если вам это интересно
- * то для поиска я пользовался утилитами find и grep),
- * Интересующий меня пример я нашел в <kernel source
- * directory>/fs/proc/array.c.
- *
- * Когда вам что-то непонятно, то лучше всего
- * поискать примеры в исходных текстах ядра. В этом состоит
- * огромное преимущество Linux перед другими ОС,
- * так как нам доступны все исходные тексты, так что -- 
- * пользуйтесь этим преимуществом!
- */
-ssize_t
-procfile_read(char *buffer,
-              char **buffer_location,
-              off_t offset, int buffer_length, int *eof, void *data)
-{
-  printk(KERN_INFO "inside /proc/test : procfile_read\n");
-
-  int len = 0;          /* Фактическое число байт */
-  static int count = 1;
-
-  /* 
-   * Мы всегда должны выдавать имеющуюся информацию,
-   * если пользователь спрашивает -- мы должны ответить.
-   *
-   * Это очень важно, поскольку библиотечная функция read
-   * будет продолжать обращаться к системному вызову
-   * read до тех пор, пока ядро не ответит, что сведений больше нет
-   * или пока буфер не будет заполнен.
-   */
-  if (offset > 0) {
-    printk(KERN_INFO "offset %d : /proc/test : procfile_read, \
-           wrote %d Bytes\n", (int)(offset), len);
-    *eof = 1;
-    return len;
-  }
-
-  /* 
-   * Заполнить буфер и получить его размер
-   */
-  len = sprintf(buffer,
-          "For the %d%s time, go away!\n", count,
-          (count % 100 > 10 && count % 100 < 14) ? "th" :
-          (count % 10 == 1) ? "st" :
-          (count % 10 == 2) ? "nd" :
-          (count % 10 == 3) ? "rd" : "th");
-  count++;
-
- /* 
-  * Вернуть размер буфера
-  */
-  printk(KERN_INFO
-         "leaving /proc/test : procfile_read, wrote %d Bytes\n", len);
-  return len;
+/* Put data into the proc fs file. *
+* Arguments
+* =========
+* 1. *
+* 2. *
+*
+* 3.
+* 4.
+* 5.
+* 6.
+*
+*
+* Usage and Return Value
+* ======================
+* A return value of zero means you have no further
+* information at this time (end of file). A negative
+* return value is an error condition. *
+* For More Information
+* ====================
+* The way I discovered what to do with this function * wasn't by reading documentation, but by reading the
+* code which used it. I just looked to see what uses
+* the get_info field of proc_dir_entry struct (I used a * combination of find and grep, if you're interested), * and I saw that it is used in <kernel source
+* directory>/fs/proc/array.c.
+*
+* If something is unknown about the kernel, this is * usually the way to go. In Linux we have the great * advantage of having the kernel source code for
+* free − use it.
+*/
+int procfile_read(  char *buffer,
+                    char **buffer_location,
+                    off_t offset,
+                    int buffer_length,
+                    int *eof,
+                    void *data){
+    int ret;
+    printk(KERN_INFO "procfile_read (/proc/%s) called\n", procfs_name);
+/*
+ * We give all of our information in one go, so if the
+ * user asks us if we have more information the
+ * answer should always be no.
+*
+* This is important because the standard read
+* function from the library would continue to issue * the read system call until the kernel replies
+* that it has no more information, or until its
+* buffer is filled.
+*/
+    if (offset > 0) {
+        /* we have finished to read, return 0 */ 
+        ret = 0;
+    } else {
+        /* fill the buffer, return the buffer size */
+        ret = sprintf(buffer, "HelloWorld!\n");
+    }
+    return ret;
 }
 
-int init_module()
-{
-  int rv = 0;
-  printk(KERN_INFO "Trying to create /proc/test:\n");
+int init_module() {
+    Our_Proc_File = create_proc_entry(procfs_name, 0644, NULL);
+    if (Our_Proc_File == NULL) {
+        remove_proc_entry(procfs_name, &proc_root);
+        printk(KERN_ALERT "Error: Could not initialize /proc/%s\n", procfs_name); 
+        return −ENOMEM;
+    }
+    Our_Proc_File−>read_proc    = procfile_read;
+    Our_Proc_File−>owner        = THIS_MODULE;
+    Our_Proc_File−>mode         = S_IFREG | S_IRUGO;
+    Our_Proc_File−>uid          = 0;
+    Our_Proc_File−>gid          = 0;
+    Our_Proc_File−>size         = 37;
 
-  Our_Proc_File = create_proc_entry("test", 0644, NULL);
+    printk(KERN_INFO "/proc/%s created\n", procfs_name);
+    return 0; /* everything is ok */
 
-  if (Our_Proc_File == NULL) {
-    rv = -ENOMEM;
-    //remove_proc_entry("test", &proc_root);
-    remove_proc_entry("test", &rb_root);
-    printk(KERN_INFO "Error: Could not initialize /proc/test\n");
-  } else {
-    printk(KERN_INFO "Success!\n");
-  }
-
-  Our_Proc_File->read_proc = procfile_read;
-  Our_Proc_File->owner = THIS_MODULE;
-  Our_Proc_File->mode = S_IFREG | S_IRUGO;
-  Our_Proc_File->uid = 0;
-  Our_Proc_File->gid = 0;
-  Our_Proc_File->size = 37;
-
-  return rv;
-}
-
-void cleanup_module()
-{
-  //remove_proc_entry("test", &proc_root);
-  remove_proc_entry("test", &rb_root);
-  printk(KERN_INFO "/proc/test removed\n");
+void cleanup_module() {
+    remove_proc_entry(procfs_name, &proc_root);
+    printk(KERN_INFO "/proc/%s removed\n", procfs_name);
 }
