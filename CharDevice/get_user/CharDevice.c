@@ -78,14 +78,17 @@ static ssize_t dev_write(	struct file *filp,
 							const char *buff,
 							size_t len,
 							loff_t *off){
-		short ind = len-1;
+		//short ind = len-1;
+		//shor ind = 0
 		short count=0;
 		memset(msg , 0, BUFF_LEN);
 		//readPos=0;
 		printk(KERN_ALERT "Write in device");
 		printk(KERN_ALERT "Wbuff = %s len = %lu\n", buff, len);
 		while(len > 0){
-			msg[count++] = buff[ind--]; //copy the given string to the driver but in reverse
+			//msg[count++] = buff[ind--]; //copy the given string to the driver but in reverse
+			msg[count] = buff[count];
+			count++;
 			len--;
 		}
 		return count;
