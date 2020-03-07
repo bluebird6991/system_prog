@@ -60,10 +60,10 @@ static int dev_open(struct inode *inod,struct file *fil){
 // called when 'read' system call is done on the device file
 static ssize_t dev_read(struct file *filp,char *buff, size_t len, loff_t *off){
 		short count = 0;
-		printk(KERN_ALERT "buff = %s msg = %s len = %lu", buff, msg, len);
+		printk(KERN_ALERT "Rbuff = %s msg = %s len = %lu\n", buff, msg, len);
 		while (len &&(msg[readPos] != 0)){
 				put_user(msg[readPos],buff++); //copy byte from kernel space to user space
-				printk(KERN_ALERT "Print char %d - %c buff - %s", count, msg[readPos], buff);
+				printk(KERN_ALERT "Print char %d - %c buff - %s\n", count, msg[readPos], buff);
 				count++;
 				len--;
 				readPos++;
@@ -82,6 +82,8 @@ static ssize_t dev_write(	struct file *filp,
 		short count=0;
 		memset(msg , 0, BUFF_LEN);
 		//readPos=0;
+		printk(KERN_ALERT "Write in device");
+		printk(KERN_ALERT "Wbuff = %s len = %lu\n", buff, len);
 		while(len > 0){
 			msg[count++] = buff[ind--]; //copy the given string to the driver but in reverse
 			len--;
