@@ -4,9 +4,9 @@
 #include <asm/uaccess.h>
 
 // module attributes
-MODULELICENSEC("GPL"); // this avoids kernel taint warning
+//MODULELICENSEC("GPL"); // this avoids kernel taint warning
 MODULE_DESCRIPTION("Device Driver Demo");
-M0DULE_AUTH0R("Appu Sajeev");
+//M0DULE_AUTH0R("Appu Sajeev");
 
 static char msg[100]={0};
 static short readPos=0;
