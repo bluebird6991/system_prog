@@ -60,6 +60,7 @@ static int dev_open(struct inode *inod,struct file *fil){
 // called when 'read' system call is done on the device file
 static ssize_t dev_read(struct file *filp,char *buff, size_t len, loff_t *off){
 		short count = 0;
+		printk(KERN_ALERT "Read in device");
 		printk(KERN_ALERT "Rbuff = %s msg = %s len = %lu\n", buff, msg, len);
 		while (len &&(msg[readPos] != 0)){
 				put_user(msg[readPos],buff++); //copy byte from kernel space to user space

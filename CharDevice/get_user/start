@@ -1,4 +1,5 @@
 sudo rmmod CharDevice.ko
+git pull
 make
 sudo insmod CharDevice.ko
 sudo mknod /dev/chardev/ c 245 0
