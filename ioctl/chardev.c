@@ -255,7 +255,7 @@ int init_module(){
  * Завершение работы модуля - дерегистрация файла в /proc 
  */
 void cleanup_module(){
-    int ret;
+    //int ret;
 
   /* 
    * Дерегистрация устройства
@@ -268,5 +268,5 @@ void cleanup_module(){
    */
     //if (ret < 0)
         //printk("Error in module_unregister_chrdev: %d\n", ret);
-    printk("Error in module_unregister_chrdev: %d\n");
+    printk("Error in module_unregister_chrdev:\n");
 }
