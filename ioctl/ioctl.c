@@ -73,7 +73,7 @@ void ioctl_get_nth_byte(int file_desc){
 /* 
  * Main - Проверка работоспособности функции ioctl
  */
-void main(){
+void main(int argc, char *argv[]){
     int file_desc, ret_val;
     char *msg = "Это сообщение передается через ioctl\n";
     file_desc = open(DEVICE_FILE_NAME, 0);
