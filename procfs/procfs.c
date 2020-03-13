@@ -17,7 +17,9 @@ static int my_proc_show(struct seq_file *m,void *v){
 
 static ssize_t my_proc_write(struct file* file,const char __user *buffer,size_t count,loff_t *f_pos){
 	char *tmp = kzalloc((count+1),GFP_KERNEL);
-	if(!tmp)return -ENOMEM;
+	if(!tmp){
+		return -ENOMEM;
+	}
 	if(copy_from_user(tmp,buffer,count)){
 		kfree(tmp);
 		return EFAULT;
@@ -28,7 +30,7 @@ static ssize_t my_proc_write(struct file* file,const char __user *buffer,size_t 
 }
 
 static int my_proc_open(struct inode *inode,struct file *file){
-	return single_open(file,my_proc_show,NULL);
+	return single_open(file, my_proc_show, NULL);
 }
 
 static struct file_operations my_fops={
