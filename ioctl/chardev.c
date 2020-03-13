@@ -150,7 +150,7 @@ static ssize_t device_write(struct file *file,
  * номер ioctl и дополнительные аргументы.
  *
  */
-static long device_ioctl(struct inode *inode, /* см. include/linux/fs.h */
+static long device_ioctl(//struct inode *inode, /* см. include/linux/fs.h */
       struct file *file,              /* то же самое */
       unsigned int ioctl_num,         /* номер и аргументы ioctl */
       unsigned long ioctl_param){
