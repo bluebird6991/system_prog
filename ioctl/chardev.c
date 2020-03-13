@@ -260,11 +260,13 @@ void cleanup_module(){
   /* 
    * Дерегистрация устройства
    */
-    ret = unregister_chrdev(MAJOR_NUM, DEVICE_NAME);
+    //ret = unregister_chrdev(MAJOR_NUM, DEVICE_NAME);
+    unregister_chrdev(MAJOR_NUM, DEVICE_NAME);
 
   /* 
    * Если обнаружена ошибка -- вывести сообщение
    */
-    if (ret < 0)
-        printk("Error in module_unregister_chrdev: %d\n", ret);
+    //if (ret < 0)
+        //printk("Error in module_unregister_chrdev: %d\n", ret);
+    printk("Error in module_unregister_chrdev: %d\n");
 }
