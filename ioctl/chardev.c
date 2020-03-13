@@ -7,6 +7,7 @@
 #include <linux/kernel.h> /* Все-таки мы работаем с ядром! */
 #include <linux/fs.h>
 #include <asm/uaccess.h>        /* определения функций get_user и put_user */
+#include <linux/ioctl.h>
 
 #include "chardev.h"
 #define SUCCESS 0
