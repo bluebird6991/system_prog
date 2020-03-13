@@ -216,7 +216,7 @@ int device_ioctl(struct inode *inode, /* см. include/linux/fs.h */
 struct file_operations Fops = {
     .read = device_read,
     .write = device_write,
-    .ioctl = device_ioctl,
+    .unloced_ioctl = device_ioctl,
     .open = device_open,
     .release = device_release,    /* оно же close */
 };
