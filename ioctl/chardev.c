@@ -214,21 +214,13 @@ int device_ioctl(struct inode *inode, /* см. include/linux/fs.h */
  * она не может быть локальной для init_module. 
  * Отсутствующие указатели в структуре забиваются значением NULL.
  */
-/*
+
 struct file_operations Fops = {
     .read = device_read,
     .write = device_write,
     .unlocked_ioctl = device_ioctl,
     .open = device_open,
     .release = device_release,
-}
-*/
-struct file_operations Fops = {
-         .read = device_read,
-         .write = device_write,
-         .unlocked_ioctl = device_ioctl,
-         .open = device_open,
-         .release = device_release,    
 };
 
 /* 
