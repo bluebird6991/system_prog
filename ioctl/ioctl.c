@@ -19,7 +19,7 @@
  * Функции работы с драйвером через ioctl  
  */
 
-ioctl_set_msg(int file_desc, char *message){
+void ioctl_set_msg(int file_desc, char *message){
     int ret_val;
 
     ret_val = ioctl(file_desc, IOCTL_SET_MSG, message);
@@ -30,7 +30,7 @@ ioctl_set_msg(int file_desc, char *message){
     }
 }
 
-ioctl_get_msg(int file_desc){
+void ioctl_get_msg(int file_desc){
     int ret_val;
     char message[100];
 
@@ -51,7 +51,7 @@ ioctl_get_msg(int file_desc){
     printf("Получено сообщение (get_msg): %s\n", message);
 }
 
-ioctl_get_nth_byte(int file_desc){
+void ioctl_get_nth_byte(int file_desc){
     int i;
     char c;
 
@@ -73,7 +73,7 @@ ioctl_get_nth_byte(int file_desc){
 /* 
  * Main - Проверка работоспособности функции ioctl
  */
-main(){
+void main(){
     int file_desc, ret_val;
     char *msg = "Это сообщение передается через ioctl\n";
     file_desc = open(DEVICE_FILE_NAME, 0);
