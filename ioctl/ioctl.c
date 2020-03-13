@@ -86,7 +86,7 @@ void main(int argc, char *argv[]){
     //ioctl_get_msg(file_desc);
     //ioctl_set_msg(file_desc, msg);
     ioctl_set_msg(file_desc, argv[1]);
-    ioctl_set_msg(file_desc);
+    ioctl_get_msg(file_desc);
 
     close(file_desc);
 }
