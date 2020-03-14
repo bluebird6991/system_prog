@@ -27,7 +27,7 @@ static ssize_t foo_store(	struct  kobject *kobj,
 							const char *buff,
 							size_t count){
 
-	foo_size = min(count, (size_t)FOO_SIZE_MAX);
+	foo_size = min(count, (size_t)FOO_SIZE_MAX) + 1;
 	strncpy(foo_tmp, buff, foo_size);
 	printk(KERN_ALERT "foostore %s\n", buff);
 	return count;
