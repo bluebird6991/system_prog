@@ -18,7 +18,7 @@ static ssize_t foo_show(struct kobject *kobj,
 						char *buff){
 	
 	strncpy(buff, foo_tmp, foo_size);
-	printk(KERN_ALERT "foo_show buff = %s foo_size = %d\n", buff, foo_size);
+	printk(KERN_ALERT "foo_show buff = %s foo_size = %d foo_tmo = %s\n", buff, foo_size, foo_tmp);
 	return foo_size;
 }
 
