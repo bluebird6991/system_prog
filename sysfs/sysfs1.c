@@ -6,7 +6,10 @@
 #include <linux/sysfs.h>
 #include <uapi/linux/stat.h> /* S_IRUSR, S_IWUSR  */
 
-enum { FOO_SIZE_MAX = 4 };
+enum {
+	FOO_SIZE_MAX = 4
+};
+
 static int foo_size;
 static char foo_tmp[FOO_SIZE_MAX];
 
@@ -15,6 +18,7 @@ static ssize_t foo_show(struct kobject *kobj,
 						char *buff){
 	
 	strncpy(buff, foo_tmp, foo_size);
+	printk(KERN_ALERT "foo_show %d\n", buff);
 	return foo_size;
 }
 
@@ -25,6 +29,7 @@ static ssize_t foo_store(	struct  kobject *kobj,
 
 	foo_size = min(count, (size_t)FOO_SIZE_MAX);
 	strncpy(foo_tmp, buff, foo_size);
+	printk(KERN_ALERT "foostore %d\n", buff);
 	return count;
 }
 
@@ -44,7 +49,7 @@ static struct kobject *kobj;
 static int myinit(void){
 	int ret;
 
-	kobj = kobject_create_and_add("lkmc_sysfs", kernel_kobj);
+	kobj = kobject_create_and_add("test", kernel_kobj);
 	if (!kobj)
 		return -ENOMEM;
 	ret = sysfs_create_group(kobj, &attr_group);
