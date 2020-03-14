@@ -1,0 +1,3 @@
+sudo rmmod sysfs.ko
+make
+sudo insmod sysfs.ko
