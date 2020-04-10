@@ -1,0 +1,1 @@
+cmd_/home/korch/system_prog/ioctl/chardev.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/korch/system_prog/ioctl/chardev.ko /home/korch/system_prog/ioctl/chardev.o /home/korch/system_prog/ioctl/chardev.mod.o;  true
