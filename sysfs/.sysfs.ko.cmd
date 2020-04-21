@@ -1,0 +1,1 @@
+cmd_/home/korch/system_prog/sysfs/sysfs.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/korch/system_prog/sysfs/sysfs.ko /home/korch/system_prog/sysfs/sysfs.o /home/korch/system_prog/sysfs/sysfs.mod.o;  true
