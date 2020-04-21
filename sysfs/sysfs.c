@@ -50,6 +50,7 @@ static void myexit(void){
 	kobject_put(kobj);
 }
 
+
 module_init(myinit);
 module_exit(myexit);
 MODULE_LICENSE("GPL");
