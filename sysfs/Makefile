@@ -1,4 +1,4 @@
-obj-m += sysfs_lee.o
+obj-m += sysfs.o
 all:
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
 clean:
