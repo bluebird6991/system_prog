@@ -1,83 +1,55 @@
-#include <linux/fs.h>
-#include <linux/cdev.h>
-#include <linux/parport.h>
-#include <asm/uaccess.h>
-#include <linux/pci.h>
-#include <linux/version.h>
- 
-#define LEN_MSG 160
-static char buf_msg[ LEN_MSG + 1 ] = "Hello from module!\n";
- 
-/* <linux/device.h>
-LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32)
-struct class_attribute {
-   struct attribute attr;
-   ssize_t (*show)(struct class *class, struct class_attribute *attr, char *buf);
-   ssize_t (*store)(struct class *class, struct class_attribute *attr,
-                    const char *buf, size_t count);
+#include <linux/init.h> 
+#include <linux/kobject.h> 
+#include <linux/module.h> 
+#include <linux/stat.h> 
+#include <linux/string.h> 
+#include <linux/sysfs.h> 
+#include <uapi/linux/stat.h> /* S_IRUSR, S_IWUSR */ 
+
+enum { FOO_SIZE_MAX = 4 }; 
+static int foo_size; 
+static char foo_tmp[FOO_SIZE_MAX]; 
+
+static ssize_t foo_show(struct kobject *kobj, struct kobj_attribute *attr, char *buff){ 
+	strncpy(buff, foo_tmp, foo_size); 
+	return foo_size; 
+} 
+
+static ssize_t foo_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buff, size_t count){ 
+	foo_size = min(count, (size_t)FOO_SIZE_MAX);
+	strncpy(foo_tmp, buff, foo_size);
+	return count;
+}
+
+static struct kobj_attribute foo_attribute =  __ATTR(foo, S_IRUGO | S_IWUSR, foo_show, foo_store);
+
+static struct attribute *attrs[] = {
+	&foo_attribute.attr,
+	NULL,
+}; 
+
+static struct attribute_group attr_group = { 
+	.attrs = attrs,
 };
-LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,32)
-struct class_attribute {
-   struct attribute attr;
-   ssize_t (*show)(struct class *class, char *buf);
-   ssize_t (*store)(struct class *class, const char *buf, size_t count);
-};
-*/
- 
-/* Метод show() из sysfs API.
-   Вызываетcя при вызове метода метод show() конкретного файла в системе sysfs */
-#if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32)
-static ssize_t x_show( struct class *class, 
-                       struct class_attribute *attr, char *buf ) {
-#else
-static ssize_t x_show( struct class *class, char *buf ) {
-#endif
-   strcpy( buf, buf_msg );
-   printk( "read %d\n", strlen( buf ) );
-   return strlen( buf );
+
+static struct kobject *kobj;
+
+static int myinit(void){
+	int ret;
+
+	kobj = kobject_create_and_add("lkmc_sysfs", kernel_kobj);
+	if (!kobj)
+	return -ENOMEM;
+	ret = sysfs_create_group(kobj, &attr_group);
+	if (ret)
+		kobject_put(kobj);
+	return ret;
+} 
+
+static void myexit(void){
+	kobject_put(kobj);
 }
- 
-/* Метод store() из sysfs API.
-   Вызываетcя при вызове метода store() конкретного файла в системе sysfs */
-#if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32)
-static ssize_t x_store( struct class *class, struct class_attribute *attr,
-                        const char *buf, size_t count ) {
-#else
-static ssize_t x_store( struct class *class, const char *buf, size_t count ) {
-#endif
-   printk( "write %d\n" , count );
-   strncpy( buf_msg, buf, count );
-   buf_msg[ count ] = '\0';
-   return count;
-}
- 
-/* <linux/device.h>
-#define CLASS_ATTR(_name, _mode, _show, _store) \
-struct class_attribute class_attr_##_name = __ATTR(_name, _mode, _show, _store) */
-CLASS_ATTR( xxx, 0666, &x_show, &x_store );
- 
-static struct class *x_class;
- 
-int __init x_init( void ) {
-   int res;
-   x_class = class_create( THIS_MODULE, "x-class" );
-   if( IS_ERR( x_class ) ) printk( "bad class create\n" );
-   res = class_create_file( x_class, &class_attr_xxx );
-/* <linux/device.h>
-extern int __must_check class_create_file(
-             struct class *class, const struct class_attribute *attr); */
-   printk( "'xxx' module initialized\n" );
-   return 0;
-}
- 
-void x_cleanup( void ) {
-/* <linux/device.h>
-extern void class_remove_file(struct class *class, const struct class_attribute *attr); */
-   class_remove_file( x_class, &class_attr_xxx );
-   class_destroy( x_class );
-   return;
-}
- 
-module_init( x_init );
-module_exit( x_cleanup );
-MODULE_LICENSE( "GPL" );
+
+module_init(myinit);
+module_exit(myexit);
+MODULE_LICENSE("GPL");
