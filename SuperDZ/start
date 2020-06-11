@@ -1,0 +1,5 @@
+#!/bin/sh
+echo -e "bot start \t`date`" >> /home/pi/ArturBot/bot3/log
+#source /home/pi/ArturBot/bot3/BOT/bin/activate
+python3 /home/pi/ArturBot/bot3/bot.py
+echo -e "bot stop \t`date`" >> /home/pi/ArturBot/bot3/log
